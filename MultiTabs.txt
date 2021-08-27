@@ -1,0 +1,56 @@
+<script type="text/javascript">
+var operatingtabs2100 = ["Contracts","Property","NDA"];
+JSCP.loadUserDataPromise.done(function () {
+ SP.SOD.executeFunc('~sitecollection/jsminifiles/tabcontent.js', null, console.log("Tab Content JS"));
+ SP.SOD.executeOrDelayUntilScriptLoaded(Createoperatingtabs2100(operatingtabs2100), '~sitecollection/jsminifiles/tabcontent.js');
+  });
+  function Createoperatingtabs2100(operatingtabs2100)
+    {
+        for(index in operatingtabs2100)
+        {    
+                
+           // $j("#divcontents").append('<div id="operatingtab'+index+'"></div>');          
+           if((document.getElementById('MSOLayout_InDesignMode').value == 1) ? false : true)    {
+              var title = operatingtabs2100[index];  
+            $("span:contains('"+title+"')").each(function(){
+                if ($(this).text() == title){
+                   var webPart = $(this).hide().closest("span").closest("[id^='MSOZoneCell_WebPart']");
+                   if ($(webPart).append().html() != undefined)
+                   {
+                           webPart = $(webPart).append();
+                   }
+                   $("#operatingtabs2100" + index).append((webPart));
+            }});
+            }
+           
+        }
+    }  
+    
+</script>
+<div class="purpletab">
+ <h4 class="Main-header">Supporting Documents</h4>
+ <div class="responsive-tabs">
+ <h2><a href="#operatingtabs21000" class="webpart_heading">Contracts</a></h2>                                       <div>                                         <div id="operatingtabs21000"></div>                                         </div>                                        <h2><a href="#operatingtabs21001" class="webpart_heading">Property </a></h2>                                       <div>                                         <div id="operatingtabs21001"></div>                                         </div>     
+ <h2><a href="#operatingtabs21002" class="webpart_heading">NDA</a></h2>                                       <div>                                         <div id="operatingtabs21002"></div>                                         </div>                                                                
+
+</div>
+</div>
+<style>
+@media (max-width: 767px) {
+.responsive-tabs__heading {
+    padding: 1rem;
+    border-bottom: 1px solid #FFF;
+    background: #8b205a;
+    position: relative;
+    line-height: 1.2;
+    background-color: #8b205a;
+    font-size: 18px;
+    font-family: bold;
+    margin: 0;
+}}
+.purpletab li.responsive-tabs__list__item {
+    max-width: none;
+}
+</style>
+    
+  
