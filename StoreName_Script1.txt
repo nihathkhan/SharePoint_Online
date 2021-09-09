@@ -1,0 +1,203 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+ 
+
+
+function setFormLocation() {      
+
+          
+
+        var StoreCode = "";    
+
+                        var LocationType ="";
+
+                        var LocationName ="";
+
+  
+
+        $.ajax({  
+
+  
+
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/SP.UserProfiles.PeopleManager/GetMyProperties",  
+
+            headers: { Accept: "application/json;odata=verbose" },  
+
+            success: function (data) {  
+
+                try {  
+
+                    //Get properties from user profile Json response  
+
+                    var properties = data.d.UserProfileProperties.results;  
+
+                    for (var i = 0; i < properties.length; i++) {  
+
+
+ 
+
+
+                        var property = properties[i];
+
+
+ 
+
+
+                        if (property.Key == "JS-StoreCode") {  
+
+                            StoreCode = property.Value;  
+
+                        }  
+
+                         if (property.Key == "JS-SelectedLocationType") {  
+
+                            LocationType = property.Value;  
+
+                        }  
+
+                         if (property.Key == "JS-SelectedLocation") {  
+
+                            LocationName = property.Value;  
+
+                        } 
+
+  
+
+                    }  
+
+                    if (LocationType == "SSC") {
+
+                    //LocationName = "You have an SSC as your selected location. Please change your location to a Store";
+
+                    }
+
+                                                            //$("input[title|='Store Name and Number']").prop('disabled', true);
+
+                        $("input[title|='Store Name and Number']").val(LocationName);
+
+  
+
+                } catch (err2) {  
+
+                    //alert(JSON.stringify(err2));  
+
+                }  
+
+            },  
+
+            error: function (jQxhr, errorCode, errorThrown) {  
+
+                alert(errorThrown);  
+
+            }  
+
+        });  
+
+                        }           
+
+
+ 
+
+
+$(document).ready(function() {setFormLocation();
+
+setRegion("Region");});
+
+function setCurrentWeek (WeekColumn) {
+
+        var today = new Date ();
+
+ 
+
+        $.ajax({
+
+                   url: "<sitecollection URL>/assets/_api/web/lists/getbytitle('FinancialCalendar')/items?$select=Title,Period,Week&$filter=(Start_x0020_Date le datetime'" + today.toISOString() + "' ) and (End_x0020_Date ge datetime'" + today.toISOString() + "')",
+
+                   method: "GET",
+
+                   headers: { "Accept": "application/json; odata=verbose" },
+
+                   success: function (data) {
+
+                       var currentweek = data.d.results[0].Week;
+
+                             $("input[title|='"+WeekColumn+"']").val(currentweek);                   
+
+                            
+
+                  },
+
+                  error: function (error) {
+
+                      alert("Error: "+ JSON.stringify(error));
+
+                 }
+
+          });
+
+        
+
+    }
+
+    
+
+    function setCurrentPeriod(PeriodColumn) {
+
+        var today = new Date ();
+
+ 
+
+        $.ajax({
+
+                   url: "<Sitecollection URL>/assets/_api/web/lists/getbytitle('FinancialCalendar')/items?$select=Title,Period,Week&$filter=(Start_x0020_Date le datetime'" + today.toISOString() + "' ) and (End_x0020_Date ge datetime'" + today.toISOString() + "')",
+
+                   method: "GET",
+
+                   headers: { "Accept": "application/json; odata=verbose" },
+
+                   success: function (data) {
+
+                       var currentperiod = data.d.results[0].Period;
+
+                             $("input[title|='"+PeriodColumn+"']").val(currentperiod);                   
+
+                            
+
+                  },
+
+                  error: function (error) {
+
+                      alert("Error: "+ JSON.stringify(error));
+
+                 }
+
+          });        
+
+    }
+
+
+ 
+
+
+$(function() {
+
+
+ 
+
+
+    setFormLocation();
+
+    setCurrentPeriod("Period Number Required Field");
+
+        setCurrentWeek("Period Week Required Field");
+
+}); 
+
+
+ 
+
+
+</script>
